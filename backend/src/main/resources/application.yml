@@ -1,0 +1,31 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: environment-supervision
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:env_supervision;MODE=MySQL;DATABASE_TO_LOWER=TRUE;DB_CLOSE_DELAY=-1
+    username: sa
+    password:
+  h2:
+    console:
+      enabled: true
+  jpa:
+    hibernate:
+      ddl-auto: update
+    open-in-view: false
+    show-sql: true
+
+supervision:
+  jwt:
+    # HS256 签名密钥（Base64 编码，长度需满足 256 位以上）。
+    # 仅用于本地开发/演示的默认值，公开仓库不放置任何真实密钥；
+    # 部署时请通过环境变量注入：export SUPERVISION_JWT_SECRET=<你的密钥>
+    # 生成方式：openssl rand -base64 48
+    secret: ${SUPERVISION_JWT_SECRET:ZGV2LW9ubHktc2VjcmV0LXBsZWFzZS1vdmVycmlkZS1pbi1wcm9kdWN0aW9uLTAwMDA=}
+    # 管理端令牌有效期：2 小时
+    admin-ttl-minutes: 120
+    # 网格员移动端令牌有效期：12 小时
+    grid-member-ttl-minutes: 720
